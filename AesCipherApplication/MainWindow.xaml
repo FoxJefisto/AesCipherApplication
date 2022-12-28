@@ -1,0 +1,87 @@
+﻿<Window x:Class="AesCipherApplication.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:AesCipherApplication"
+        mc:Ignorable="d" WindowStartupLocation="CenterScreen"
+        Title="AES Cipher Application" Height="600" Width="750">
+    <Window.CommandBindings>
+        <CommandBinding Command="Help" Executed="HelpCommand_Executed"/>
+        <CommandBinding Command="Close" Executed="CloseCommand_Executed"/>
+    </Window.CommandBindings>
+    <Grid>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="2*"/>
+                <RowDefinition Height="16*"/>
+                <RowDefinition Height="4*"/>
+            </Grid.RowDefinitions>
+            <Menu Grid.Row="0">
+                <MenuItem Header="О программе" Command="Help"/>
+                <MenuItem Header="Выход" Command="Close"/>
+            </Menu>
+            <StackPanel Grid.Row="1" Background="#FF1268BD">
+                <TextBlock HorizontalAlignment="Center"  FontSize="40" Foreground="White"
+                    Text="AES Cipher Application"/>
+            </StackPanel>
+            <StackPanel Margin="0,11,0,0" Grid.Row="2">
+                <StackPanel Margin="10, 20" Orientation="Horizontal">
+                    <TextBlock Text="Пароль"/>
+                    <PasswordBox x:Name="pbPassword" Margin="20,0" Width="150"/>
+                    <Button x:Name="btnPasswordSet" Content="Установить пароль" Margin="5,0" Padding="10,0"
+                            Click="btnPasswordSet_Click"/>
+                    <Button x:Name="btnPasswordChange" Content="Изменить пароль" Margin="5,0" Padding="10,0"
+                            Click="btnKeyChange_Click" Visibility="Collapsed"/>
+                    <Button x:Name="btnPasswordSettings" Content="Настройки" Margin="20,0" Padding="10,0" Click="btnPasswordSettings_Click"/>
+                </StackPanel>
+                <GroupBox x:Name="gbChoice" Visibility="Collapsed" Header="Выберите объект, с которым нужно работать?" Margin="15, 5">
+                    <StackPanel HorizontalAlignment="Left">
+                        <RadioButton x:Name="rbFile" Margin="3" Checked="RadioButton_Checked">Файл</RadioButton>
+                        <RadioButton x:Name="rbText" Margin="3" Checked="RadioButton_Checked">Текст</RadioButton>
+                    </StackPanel>
+                </GroupBox>
+                <TextBox x:Name="tbText" Visibility="Collapsed" Margin="15, 5" Height="80"
+                         TextWrapping="Wrap" AcceptsReturn="True" VerticalScrollBarVisibility="Visible"/>
+                <StackPanel x:Name="spInputPathFile" Visibility="Collapsed"  Orientation="Horizontal" Margin="15, 10">
+                    <TextBox x:Name="tbInputPathFile" MinWidth="300" MaxWidth="400"/>
+                    <Button x:Name="btnInputPathFile" Content="Обзор" Margin="20, 0" Padding="20,3"
+                            Click="btnInputPathFile_Click"/>
+                </StackPanel>
+                <Grid Margin="15, 5">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <GroupBox x:Name="spAction" Visibility="Collapsed" Header="Выберите действие?">
+                        <StackPanel HorizontalAlignment="Left">
+                            <RadioButton x:Name="rbEncrypt" Margin="3" Checked="RadioButton_Checked">Зашифровать</RadioButton>
+                            <RadioButton x:Name="rbDecrypt" Margin="3" Checked="RadioButton_Checked">Расшифровать</RadioButton>
+                        </StackPanel>
+                    </GroupBox>
+                    <StackPanel x:Name="spExtra"  Visibility="Collapsed" Grid.Column="1" Margin="20,0,10,0">
+                        <TextBlock Text="Дополнительные возможности:" Margin="0,0,0,5"/>
+                        <CheckBox x:Name="cbRemoveInputFile" 
+                                  Checked="cbRemoveInputFile_Checked" Unchecked="cbRemoveInputFile_Unchecked"
+                                  Content="Удалить исходный файл после выполнения действия"  Margin="0,0,0,5"/>
+                        <CheckBox x:Name="cbSaveOutputInFile" Content="Сохранить результат операции в файл"  Margin="0,0,0,5" 
+                              Checked="cbSaveOutputInFile_Checked"
+                              Unchecked="cbSaveOutputInFile_Unchecked"/>
+                        <StackPanel x:Name="spOutputPathFile" Visibility="Hidden"  Orientation="Horizontal" Margin="15, 10">
+                            <TextBox x:Name="tbOutputPathFile" MinWidth="180" MaxWidth="180"/>
+                            <Button x:Name="btnOutputPathFile" Content="Обзор" Margin="20, 0" Padding="20,3"
+                            Click="btnOutputPathFile_Click"/>
+                        </StackPanel>
+                    </StackPanel>
+                </Grid>
+                <Button x:Name="btnStart" Visibility="Collapsed" Content="Старт" HorizontalAlignment="Center" Margin="20" Padding="20,3"
+                        Click="btnStart_Click"/>
+            </StackPanel>
+            <Grid Grid.Row="3">
+                <TextBox x:Name="tbResult" Visibility="Collapsed" Margin="15, 10" VerticalAlignment="Stretch"
+                         TextWrapping="Wrap" AcceptsReturn="True" VerticalScrollBarVisibility="Visible"/>
+            </Grid>
+        </Grid>
+    </Grid>
+</Window>

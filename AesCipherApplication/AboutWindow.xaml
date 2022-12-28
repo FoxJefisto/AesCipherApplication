@@ -1,0 +1,26 @@
+﻿<Window x:Class="AesCipherApplication.AboutWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:AesCipherApplication"
+        mc:Ignorable="d"
+        Title="AboutWindow" Height="250" Width="400" Foreground="White">
+    <Window.Resources>
+        <BitmapImage x:Key="square" UriSource="/Resources/square.png"/>
+    </Window.Resources>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Image Source="{StaticResource square}"/>
+        <StackPanel Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center"
+                     Background="DarkGray">
+            <TextBlock Text="Курсовая работа" HorizontalAlignment="Center"/>
+            <TextBlock Text="Тема: Алгоритм шифрования AES" HorizontalAlignment="Center"/>
+            <TextBlock Text="Выполнил студент группы А-05-19" HorizontalAlignment="Center"/>
+            <TextBlock Text="Филиппов Евгений" HorizontalAlignment="Center"/>
+        </StackPanel>
+    </Grid>
+</Window>
