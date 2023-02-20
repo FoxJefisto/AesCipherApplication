@@ -3,9 +3,9 @@
 </p>
 
 <p align="center">
-    <img src="https://img.shields.io/github/watchers/FoxJefisto/FootballTrackerWPF?style=social" alt="watchers">
-    <img src="https://img.shields.io/github/last-commit/FoxJefisto/FootballTrackerWPF" alt="last commit">
-    <img src="https://img.shields.io/github/repo-size/FoxJefisto/FootballTrackerWPF" alt=repo-size">
+    <img src="https://img.shields.io/github/watchers/FoxJefisto/AesCipherApplication?style=social" alt="watchers">
+    <img src="https://img.shields.io/github/last-commit/FoxJefisto/AesCipherApplication" alt="last commit">
+    <img src="https://img.shields.io/github/repo-size/FoxJefisto/AesCipherApplication" alt=repo-size">
 </p>
 
 ## About
