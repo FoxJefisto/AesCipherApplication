@@ -457,7 +457,7 @@ namespace aes
 
 
         /// <summary>
-        /// Генерировация раундовых ключи
+        /// Генерирование раундовых ключей
         /// </summary>
         private static void KeySchedule()
         {

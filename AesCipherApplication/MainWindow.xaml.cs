@@ -10,12 +10,16 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
+using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Application = System.Windows.Application;
+using MessageBox = System.Windows.MessageBox;
 using Path = System.IO.Path;
+using RadioButton = System.Windows.Controls.RadioButton;
 
 namespace AesCipherApplication
 {
@@ -87,38 +91,85 @@ namespace AesCipherApplication
             }
             else
             {
-                var crypter = new Crypter(keyGenerator.Key);
-                if (rbEncrypt.IsChecked.Value)
+                try
                 {
-                    var passwordConfirmationWindow = new PasswordConfirmationWindow(pbPassword.Password);
-                    passwordConfirmationWindow.Owner = this;
-                    if (passwordConfirmationWindow.ShowDialog().Value)
+                    var crypter = new Crypter(keyGenerator.Key);
+                    if (rbEncrypt.IsChecked.Value)
+                    {
+                        var passwordConfirmationWindow = new PasswordConfirmationWindow(pbPassword.Password);
+                        passwordConfirmationWindow.Owner = this;
+                        if (passwordConfirmationWindow.ShowDialog().Value)
+                        {
+                            if (rbText.IsChecked.Value)
+                            {
+                                if (cbSaveOutputInFile.IsChecked.Value)
+                                {
+                                    tbResult.Visibility = Visibility.Collapsed;
+                                    File.WriteAllBytes(tbOutputPathFile.Text, crypter.EncryptStringToBytes(tbText.Text));
+                                }
+                                else
+                                {
+                                    tbResult.Visibility = Visibility.Visible;
+                                    tbResult.Text = crypter.EncryptStringToString(tbText.Text);
+                                }
+
+                            }
+                            else if (rbFile.IsChecked.Value && File.Exists(tbInputPathFile.Text))
+                            {
+                                if (cbSaveOutputInFile.IsChecked.Value)
+                                {
+                                    tbResult.Visibility = Visibility.Collapsed;
+                                    File.WriteAllBytes(tbOutputPathFile.Text, crypter.EncryptBytesToBytes(File.ReadAllBytes(tbInputPathFile.Text)));
+                                }
+                                else
+                                {
+                                    tbResult.Visibility = Visibility.Visible;
+                                    tbResult.Text = crypter.EncryptBytesToString(File.ReadAllBytes(tbInputPathFile.Text));
+                                }
+                                if (cbRemoveInputFile.IsChecked.Value && tbInputPathFile.Text != tbOutputPathFile.Text)
+                                {
+                                    File.Delete(tbInputPathFile.Text);
+                                }
+                                MessageBox.Show("Операция успешно выполнена", "SUCCESS", MessageBoxButton.OK, MessageBoxImage.Information);
+                            }
+                            else
+                            {
+                                MessageBox.Show("Неверно указаны пути к файлам", "ERROR", MessageBoxButton.OK, MessageBoxImage.Error);
+                            }
+
+                        }
+                        else
+                        {
+                            MessageBox.Show("При подтверждении пароли не совпали", "ERROR", MessageBoxButton.OK, MessageBoxImage.Error);
+                        }
+                    }
+                    else if (rbDecrypt.IsChecked.Value)
                     {
                         if (rbText.IsChecked.Value)
                         {
                             if (cbSaveOutputInFile.IsChecked.Value)
                             {
                                 tbResult.Visibility = Visibility.Collapsed;
-                                File.WriteAllBytes(tbOutputPathFile.Text, crypter.EncryptStringToBytes(tbText.Text));
+                                File.WriteAllBytes(tbOutputPathFile.Text, crypter.DecryptStringToBytes(tbText.Text));
                             }
                             else
                             {
                                 tbResult.Visibility = Visibility.Visible;
-                                tbResult.Text = crypter.EncryptStringToString(tbText.Text);
+                                tbResult.Text = crypter.DecryptStringToString(tbText.Text);
                             }
-                            
+
                         }
                         else if (rbFile.IsChecked.Value && File.Exists(tbInputPathFile.Text))
                         {
                             if (cbSaveOutputInFile.IsChecked.Value)
                             {
                                 tbResult.Visibility = Visibility.Collapsed;
-                                File.WriteAllBytes(tbOutputPathFile.Text, crypter.EncryptBytesToBytes(File.ReadAllBytes(tbInputPathFile.Text)));
+                                File.WriteAllBytes(tbOutputPathFile.Text, crypter.DecryptBytesToBytes(File.ReadAllBytes(tbInputPathFile.Text)));
                             }
                             else
                             {
                                 tbResult.Visibility = Visibility.Visible;
-                                tbResult.Text = crypter.EncryptBytesToString(File.ReadAllBytes(tbInputPathFile.Text));
+                                tbResult.Text = crypter.DecryptBytesToString(File.ReadAllBytes(tbInputPathFile.Text));
                             }
                             if (cbRemoveInputFile.IsChecked.Value && tbInputPathFile.Text != tbOutputPathFile.Text)
                             {
@@ -130,52 +181,12 @@ namespace AesCipherApplication
                         {
                             MessageBox.Show("Неверно указаны пути к файлам", "ERROR", MessageBoxButton.OK, MessageBoxImage.Error);
                         }
-                        
-                    }
-                    else
-                    {
-                        MessageBox.Show("При подтверждении пароли не совпали", "ERROR", MessageBoxButton.OK, MessageBoxImage.Error);
+
                     }
                 }
-                else if (rbDecrypt.IsChecked.Value)
+                catch (Exception ex)
                 {
-                    if (rbText.IsChecked.Value)
-                    {
-                        if (cbSaveOutputInFile.IsChecked.Value)
-                        {
-                            tbResult.Visibility = Visibility.Collapsed;
-                            File.WriteAllBytes(tbOutputPathFile.Text, crypter.DecryptStringToBytes(tbText.Text));
-                        }
-                        else
-                        {
-                            tbResult.Visibility = Visibility.Visible;
-                            tbResult.Text = crypter.DecryptStringToString(tbText.Text);
-                        }
-                        
-                    }
-                    else if (rbFile.IsChecked.Value && File.Exists(tbInputPathFile.Text))
-                    {
-                        if (cbSaveOutputInFile.IsChecked.Value)
-                        {
-                            tbResult.Visibility = Visibility.Collapsed;
-                            File.WriteAllBytes(tbOutputPathFile.Text, crypter.DecryptBytesToBytes(File.ReadAllBytes(tbInputPathFile.Text)));
-                        }
-                        else
-                        {
-                            tbResult.Visibility = Visibility.Visible;
-                            tbResult.Text = crypter.DecryptBytesToString(File.ReadAllBytes(tbInputPathFile.Text));
-                        }
-                        if (cbRemoveInputFile.IsChecked.Value && tbInputPathFile.Text != tbOutputPathFile.Text)
-                        {
-                            File.Delete(tbInputPathFile.Text);
-                        }
-                        MessageBox.Show("Операция успешно выполнена", "SUCCESS", MessageBoxButton.OK, MessageBoxImage.Information);
-                    }
-                    else
-                    {
-                        MessageBox.Show("Неверно указаны пути к файлам", "ERROR", MessageBoxButton.OK, MessageBoxImage.Error);
-                    }
-                    
+                    MessageBox.Show(ex.Message, "ERROR", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
             }
         }
